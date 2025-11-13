@@ -1,20 +1,32 @@
 ---
 deployment:
   tasks:
+    # === Konfigurasi path ===
     - export REPOPATH=/home/simb9878/repositories/simonev-sop
     - export DEPLOYPATH=/home/simb9878/public_html
+    - export COMPOSER="/usr/bin/php /home/simb9878/repositories/simonev-sop/composer.phar"
 
     - echo "🚀 Deployment started at $(date)" >> /home/simb9878/deploy.log
 
-    # Bersihkan isi public_html
+    # === Bersihkan public_html sebelum copy ===
     - /bin/rm -rf $DEPLOYPATH/*
+    - echo "🧹 public_html dibersihkan" >> /home/simb9878/deploy.log
 
-    # Salin file publik Laravel ke public_html
+    # === Copy hanya folder public ke public_html ===
     - /bin/cp -r $REPOPATH/public/* $DEPLOYPATH/
+    - echo "📦 File public disalin ke public_html" >> /home/simb9878/deploy.log
 
-    # Ubah path index.php agar menunjuk ke repo Laravel
+    # === Update path di index.php agar mengarah ke folder repository Laravel ===
     - /bin/sed -i "s#../vendor/#../repositories/simonev-sop/vendor/#g" $DEPLOYPATH/index.php
     - /bin/sed -i "s#../bootstrap/#../repositories/simonev-sop/bootstrap/#g" $DEPLOYPATH/index.php
+    - echo "🔧 index.php disesuaikan" >> /home/simb9878/deploy.log
 
-    - echo "✅ Deployment finished at $(date)" >> /home/simb9878/deploy.log
+    # === Jalankan Composer Install ===
+    - cd $REPOPATH && $COMPOSER install --no-dev --optimize-autoloader >> /home/simb9878/deploy.log 2>&1
+    - echo "📦 Composer install selesai" >> /home/simb9878/deploy.log
 
+    # === Set permission Laravel ===
+    - chmod -R 775 $REPOPATH/storage $REPOPATH/bootstrap/cache
+    - echo "🔐 Permission storage & cache diset" >> /home/simb9878/deploy.log
+
+    - echo "✅ Deployment selesai pada $(date)" >> /home/simb9878/deploy.log
