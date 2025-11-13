@@ -17,4 +17,4 @@ deployment:
     - /bin/sed -i "s#../vendor/#../repositories/simonev-sop/vendor/#g" $DEPLOYPATH/index.php
     - /bin/sed -i "s#../bootstrap/#../repositories/simonev-sop/bootstrap/#g" $DEPLOYPATH/index.php
 
-    - echo "✅ Deployment finished at $(date)" >> /home/simb9878/deploy.log tolong sesuaikan
+    - echo "✅ Deployment finished at $(date)" >> /home/simb9878/deploy.log
