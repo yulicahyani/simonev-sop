@@ -1,0 +1,23 @@
+version: '3'
+services: 
+  app:
+    image: simonev-sop
+    container_name: simonev-sop
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www/html
+      - ./.docker/default.conf:/etc/nginx/conf.d/default.conf
+      - ./.docker/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+    ports:
+      - 8051:80
+    environment: 
+      PMA_HOST: mysql
+    networks:
+      - localserver
+networks:
+  localserver:
+    external:
+      name: localserver
