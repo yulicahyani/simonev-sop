@@ -1,5 +1,7 @@
 ---
 deployment:
-tasks:
-- export DEPLOYPATH=/home/simb9878/public_html/
-- /bin/cp -r * $DEPLOYPATH
+  tasks:
+    - export DEPLOYPATH=/home/simb9878/public_html
+    - echo "🚀 Deployment started at $(date)" >> /home/simb9878/deploy.log
+    - /bin/rsync -av --exclude='.git' --exclude='.env' --exclude='storage' --exclude='vendor' --delete ./ $DEPLOYPATH >> /home/simb9878/deploy.log 2>&1
+    - echo "✅ Deployment finished at $(date)" >> /home/simb9878/deploy.log
