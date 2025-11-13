@@ -1,32 +1,28 @@
 ---
 deployment:
   tasks:
-    # === Konfigurasi path ===
+    # === Path Konfigurasi ===
     - export REPOPATH=/home/simb9878/repositories/simonev-sop
     - export DEPLOYPATH=/home/simb9878/public_html
-    - export COMPOSER="/usr/bin/php /home/simb9878/repositories/simonev-sop/composer.phar"
+    - export PHPCLI=/opt/cpanel/ea-php74/root/usr/bin/php
 
     - echo "🚀 Deployment started at $(date)" >> /home/simb9878/deploy.log
 
-    # === Bersihkan public_html sebelum copy ===
+    # Bersihkan public_html sebelum deploy
     - /bin/rm -rf $DEPLOYPATH/*
     - echo "🧹 public_html dibersihkan" >> /home/simb9878/deploy.log
 
-    # === Copy hanya folder public ke public_html ===
+    # Salin folder public
     - /bin/cp -r $REPOPATH/public/* $DEPLOYPATH/
     - echo "📦 File public disalin ke public_html" >> /home/simb9878/deploy.log
 
-    # === Update path di index.php agar mengarah ke folder repository Laravel ===
+    # Jalankan composer install menggunakan PHP CLI
+    - cd $REPOPATH && $PHPCLI composer.phar install --no-dev --optimize-autoloader >> /home/simb9878/deploy.log 2>&1
+    - echo "📦 Composer dependencies diinstall" >> /home/simb9878/deploy.log
+
+    # Sesuaikan index.php agar mengarah ke folder repository
     - /bin/sed -i "s#../vendor/#../repositories/simonev-sop/vendor/#g" $DEPLOYPATH/index.php
     - /bin/sed -i "s#../bootstrap/#../repositories/simonev-sop/bootstrap/#g" $DEPLOYPATH/index.php
     - echo "🔧 index.php disesuaikan" >> /home/simb9878/deploy.log
 
-    # === Jalankan Composer Install ===
-    - cd $REPOPATH && $COMPOSER install --no-dev --optimize-autoloader >> /home/simb9878/deploy.log 2>&1
-    - echo "📦 Composer install selesai" >> /home/simb9878/deploy.log
-
-    # === Set permission Laravel ===
-    - chmod -R 775 $REPOPATH/storage $REPOPATH/bootstrap/cache
-    - echo "🔐 Permission storage & cache diset" >> /home/simb9878/deploy.log
-
-    - echo "✅ Deployment selesai pada $(date)" >> /home/simb9878/deploy.log
+    - echo "✅ Deployment finished at $(date)" >> /home/simb9878/deploy.log
