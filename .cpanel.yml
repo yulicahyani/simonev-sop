@@ -1,24 +1,23 @@
 ---
 deployment:
   tasks:
-    # === Path Konfigurasi ===
     - export REPOPATH=/home/simb9878/repositories/simonev-sop
     - export DEPLOYPATH=/home/simb9878/public_html
 
     - echo "🚀 Deployment started at $(date)" >> /home/simb9878/deploy.log
 
-    # === Jalankan Composer Install di Repository ===
+    # Jalankan Composer install di repository
     - cd $REPOPATH
-    - /usr/bin/php composer.phar install --no-dev --optimize-autoloader >> /home/simb9878/deploy.log 2>&1
+    - /usr/bin/php $REPOPATH/composer.phar install --no-dev --optimize-autoloader >> /home/simb9878/deploy.log 2>&1
 
-    # === Bersihkan public_html sebelum menyalin file baru ===
+    # Bersihkan folder public_html sebelum menyalin file baru
     - /bin/rm -rf $DEPLOYPATH/*
 
-    # === Salin isi folder "public" ke public_html ===
+    # Salin isi folder public ke public_html
     - /bin/cp -r $REPOPATH/public/* $DEPLOYPATH/
 
-    # === Perbaiki path di index.php agar Laravel bisa dijalankan dari folder repository ===
-    - /bin/sed -i "s#../vendor/#../repositories/simonev-sop/vendor/#g" $DEPLOYPATH/index.php
-    - /bin/sed -i "s#../bootstrap/#../repositories/simonev-sop/bootstrap/#g" $DEPLOYPATH/index.php
+    # Sesuaikan path di index.php
+    - /bin/sed -i 's#../vendor/#../repositories/simonev-sop/vendor/#g' $DEPLOYPATH/index.php
+    - /bin/sed -i 's#../bootstrap/#../repositories/simonev-sop/bootstrap/#g' $DEPLOYPATH/index.php
 
     - echo "✅ Deployment finished at $(date)" >> /home/simb9878/deploy.log
