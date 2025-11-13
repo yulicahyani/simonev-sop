@@ -16,10 +16,6 @@ deployment:
     - /bin/cp -r $REPOPATH/public/* $DEPLOYPATH/
     - echo "📦 File public disalin ke public_html" >> /home/simb9878/deploy.log
 
-    # Jalankan composer install menggunakan PHP CLI
-    - cd $REPOPATH && $PHPCLI composer.phar install --no-dev --optimize-autoloader >> /home/simb9878/deploy.log 2>&1
-    - echo "📦 Composer dependencies diinstall" >> /home/simb9878/deploy.log
-
     # Sesuaikan index.php agar mengarah ke folder repository
     - /bin/sed -i "s#../vendor/#../repositories/simonev-sop/vendor/#g" $DEPLOYPATH/index.php
     - /bin/sed -i "s#../bootstrap/#../repositories/simonev-sop/bootstrap/#g" $DEPLOYPATH/index.php
