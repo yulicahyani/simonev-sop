@@ -6,17 +6,17 @@ deployment:
 
     - echo "🚀 Deployment started at $(date)" >> /home/simb9878/deploy.log
 
-    # Jalankan Composer
+    # Jalankan Composer di dalam repository
     - cd $REPOPATH
-    - /usr/bin/php composer.phar install --no-dev --optimize-autoloader >> /home/simb9878/deploy.log 2>&1
+    - /usr/local/bin/php $REPOPATH/composer.phar install --no-dev --optimize-autoloader >> /home/simb9878/deploy.log 2>&1
 
-    # Bersihkan public_html
+    # Hapus isi public_html sebelum menyalin file baru
     - /bin/rm -rf $DEPLOYPATH/*
 
-    # Salin folder public ke public_html
+    # Salin isi folder public Laravel ke public_html
     - /bin/cp -r $REPOPATH/public/* $DEPLOYPATH/
 
-    # Perbaiki path index.php agar vendor & bootstrap diarahkan ke repository
+    # Sesuaikan path index.php agar Laravel bisa jalan dari folder repository
     - /bin/sed -i "s#../vendor/#../repositories/simonev-sop/vendor/#g" $DEPLOYPATH/index.php
     - /bin/sed -i "s#../bootstrap/#../repositories/simonev-sop/bootstrap/#g" $DEPLOYPATH/index.php
 
