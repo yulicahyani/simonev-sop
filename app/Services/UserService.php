@@ -40,6 +40,7 @@ class UserService {
                     ->where('user_mapping.role_code', $role_code)
                     ->where('user_mapping.unit_code', $unit_code)
                     ->join('sop', 'sop.id', '=', 'user_mapping.sop_id')
+                    ->select('user_mapping.*', 'sop.*', 'user_mapping.id as umap_id')
                     ->get();
 
         return $mapping;

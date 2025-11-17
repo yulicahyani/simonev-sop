@@ -184,7 +184,7 @@ class UsersController extends Controller
                             data-kt-menu-attach="body">
                                 <div class="menu-item px-3" title="Klik untuk mengedit data">
                                     <button class="dropdown-item menu-link px-3" onclick="deleteForm(this)"
-                                        data-string="'.encrypt($row->id).'">Hapus</button>
+                                        data-string="'.encrypt($row->umap_id).'">Hapus</button>
                                 </div>
                         </div>';
 
