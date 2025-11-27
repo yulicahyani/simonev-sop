@@ -12,7 +12,7 @@
         <p data-aos="fade-up" data-aos-delay="100">Sistem Informasi Konsultasi, Monitoring & Evaluasi SOP Pemerintah Kabupaten Badung<br></p>
         <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
           <a href="{{route('backend.beranda')}}" class="btn-get-started">Jelajahi Sistem</a>
-          <a href="{{route('/')}}" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-journal-text"></i><span>Baca Panduan</span></a>
+          <a href="https://klik.badungkab.go.id/u/PanduanSIMONEVSOP" class="btn-watch-video d-flex align-items-center" target="_blank"><i class="bi bi-journal-text"></i><span>Baca Panduan</span></a>
         </div>
         <img src="{{ asset('images/photo/bupwabup3.png') }}" class="img-fluid hero-img" alt="" data-aos="zoom-out" data-aos-delay="300">
       </div>
